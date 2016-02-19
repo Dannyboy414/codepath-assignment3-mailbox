@@ -12,6 +12,7 @@
 		743AD6411C73F218007A6CF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 743AD63F1C73F218007A6CF7 /* Main.storyboard */; };
 		743AD6431C73F218007A6CF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 743AD6421C73F218007A6CF7 /* Assets.xcassets */; };
 		743AD6461C73F218007A6CF7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 743AD6441C73F218007A6CF7 /* LaunchScreen.storyboard */; };
+		74630B421C74EEF0000A70D4 /* MailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74630B411C74EEF0000A70D4 /* MailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		743AD6421C73F218007A6CF7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		743AD6451C73F218007A6CF7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		743AD6471C73F218007A6CF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		74630B411C74EEF0000A70D4 /* MailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				743AD63B1C73F218007A6CF7 /* AppDelegate.swift */,
+				74630B411C74EEF0000A70D4 /* MailViewController.swift */,
 				743AD63D1C73F218007A6CF7 /* ViewController.swift */,
 				743AD63F1C73F218007A6CF7 /* Main.storyboard */,
 				743AD6421C73F218007A6CF7 /* Assets.xcassets */,
@@ -138,6 +141,7 @@
 			files = (
 				743AD63E1C73F218007A6CF7 /* ViewController.swift in Sources */,
 				743AD63C1C73F218007A6CF7 /* AppDelegate.swift in Sources */,
+				74630B421C74EEF0000A70D4 /* MailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +289,7 @@
 				743AD64C1C73F218007A6CF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
