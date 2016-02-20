@@ -64,7 +64,7 @@ class MailViewController: UIViewController, UIScrollViewDelegate {
     
     @IBAction func didPanMessage(sender: UIPanGestureRecognizer) {
         let translation = sender.translationInView(view)
-        var velocity = sender.velocityInView(view)
+        let velocity = sender.velocityInView(view)
         
         if sender.state == UIGestureRecognizerState.Began {
             print("Gesture began at: \(translation)")
@@ -75,28 +75,28 @@ class MailViewController: UIViewController, UIScrollViewDelegate {
             messageView.center = CGPoint(x: messageOriginalCenter.x + translation.x, y: messageOriginalCenter.y)
         }
         
-        if translation.x >= 0 && translation.x <= 50 {
+        if translation.x >= 0 && translation.x <= 60 {
             leftView.backgroundColor = UIColor.init(hexString: "e3e3e3")
             leftViewImage.image = UIImage(named: "archive_icon")
         }
-        if translation.x >= 50 && translation.x <= 220 {
+        if translation.x >= 60 && translation.x <= 260 {
             leftView.backgroundColor = UIColor.init(hexString: "70d962")
             leftViewImage.image = UIImage(named: "archive_icon")
         }
-        if translation.x >= 220 && translation.x <= 320 {
+        if translation.x >= 260 && translation.x <= 320 {
             leftView.backgroundColor = UIColor.init(hexString: "e21314")
             leftViewImage.image = UIImage(named: "delete_icon")
         }
         
-        if translation.x <= 0 && translation.x >= -50 {
+        if translation.x <= 0 && translation.x >= -60 {
             rightView.backgroundColor = UIColor.init(hexString: "e3e3e3")
             rightViewImage.image = UIImage(named: "later_icon")
         }
-        if translation.x <= -50 && translation.x >= -220 {
+        if translation.x <= -60 && translation.x >= -260 {
             rightView.backgroundColor = UIColor.init(hexString: "fad233")
             rightViewImage.image = UIImage(named: "later_icon")
         }
-        if translation.x <= -220 && translation.x >= -320 {
+        if translation.x <= -260 && translation.x >= -320 {
             rightView.backgroundColor = UIColor.init(hexString: "d8a675")
             rightViewImage.image = UIImage(named: "list_icon")
 
