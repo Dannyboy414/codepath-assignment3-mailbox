@@ -37,10 +37,12 @@ class MailViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var leftViewImage: UIImageView!
     @IBOutlet weak var rightViewImage: UIImageView!
     @IBOutlet weak var rescheduleView: UIView!
-
+    @IBOutlet weak var messageViewImage: UIImageView!
+    @IBOutlet weak var listView: UIView!
 
     
     var messageOriginalCenter: CGPoint!
+    var originalMessageViewImageCenter: CGPoint!
     var messageLeftOffset: CGFloat!
     var messageRightOffset: CGFloat!
     var messageRight: CGPoint!
@@ -55,6 +57,7 @@ class MailViewController: UIViewController, UIScrollViewDelegate {
         messageLeftOffset = -320
         messageRightOffset = 320
         messageOriginalCenter = messageView.center
+        originalMessageViewImageCenter = messageViewImage.center
         messageLeft = CGPoint(x: messageView.center.x  + messageLeftOffset, y:messageView.center.y)
         messageRight = CGPoint(x: messageView.center.x  + messageRightOffset, y:messageView.center.y)
         
@@ -68,56 +71,133 @@ class MailViewController: UIViewController, UIScrollViewDelegate {
         
         if sender.state == UIGestureRecognizerState.Began {
             print("Gesture began at: \(translation)")
-            messageOriginalCenter = messageView.center
+            messageView.center = messageOriginalCenter
+            messageViewImage.center = originalMessageViewImageCenter
+            leftViewImage.alpha = 0.5
+            rightViewImage.alpha = 0.5
+            leftView.backgroundColor = UIColor.init(hexString: "e3e3e3")
+            rightView.backgroundColor = UIColor.init(hexString: "e3e3e3")
         }
         if sender.state == UIGestureRecognizerState.Changed {
             print("Gesture changed at: \(translation)")
-            messageView.center = CGPoint(x: messageOriginalCenter.x + translation.x, y: messageOriginalCenter.y)
-        }
-        
-        if translation.x >= 0 && translation.x <= 60 {
-            leftView.backgroundColor = UIColor.init(hexString: "e3e3e3")
-            leftViewImage.image = UIImage(named: "archive_icon")
-        }
-        if translation.x >= 60 && translation.x <= 260 {
-            leftView.backgroundColor = UIColor.init(hexString: "70d962")
-            leftViewImage.image = UIImage(named: "archive_icon")
-        }
-        if translation.x >= 260 && translation.x <= 320 {
-            leftView.backgroundColor = UIColor.init(hexString: "e21314")
-            leftViewImage.image = UIImage(named: "delete_icon")
-        }
-        
-        if translation.x <= 0 && translation.x >= -60 {
-            rightView.backgroundColor = UIColor.init(hexString: "e3e3e3")
-            rightViewImage.image = UIImage(named: "later_icon")
-        }
-        if translation.x <= -60 && translation.x >= -260 {
-            rightView.backgroundColor = UIColor.init(hexString: "fad233")
-            rightViewImage.image = UIImage(named: "later_icon")
-        }
-        if translation.x <= -260 && translation.x >= -320 {
-            rightView.backgroundColor = UIColor.init(hexString: "d8a675")
-            rightViewImage.image = UIImage(named: "list_icon")
 
+            // move only the message image
+            if  translation.x >= -60 && translation.x <=  60{
+                messageViewImage.center = CGPoint(x: originalMessageViewImageCenter.x + translation.x, y:originalMessageViewImageCenter.y)
+            }
+            
+            // move everything
+            // swipe left, affects rightView
+            if translation.x <= -61 {
+                messageView.center = CGPoint(x: messageOriginalCenter.x + translation.x + 60, y: messageOriginalCenter.y)
+                messageViewImage.center = CGPoint(x: originalMessageViewImageCenter.x - 60, y:originalMessageViewImageCenter.y)
+                rightView.backgroundColor = UIColor.init(hexString: "fad233")
+            }
+            
+            // swipe right, affects leftView
+            if translation.x >= 61 {
+                messageView.center = CGPoint(x: messageOriginalCenter.x + translation.x - 60, y: messageOriginalCenter.y)
+                messageViewImage.center = CGPoint(x: originalMessageViewImageCenter.x + 60, y:originalMessageViewImageCenter.y)
+                leftView.backgroundColor = UIColor.init(hexString: "70d962")
+            }
         }
+//        if translation.x <= -61 {
+//            leftView.backgroundColor = UIColor.init(hexString: "fad233")
+//        }
+//        
+//        if translation.x >= 61 {
+//            rightView.backgroundColor = UIColor.init(hexString: "70d962")
+//        }
+//        if translation.x >= 0 && translation.x <= 60 {
+//            UIView.animateWithDuration(1.8, animations: {
+//            self.leftView.backgroundColor = UIColor.init(hexString: "e3e3e3")
+//            self.leftViewImage.image = UIImage(named: "archive_icon"); self.leftViewImage.alpha = 1
+//                }
+//        )}
+//        else {
+//            self.leftViewImage.alpha = 0
+//        }
+//        if translation.x >= 60 && translation.x <= 260 {
+//            leftView.backgroundColor = UIColor.init(hexString: "70d962")
+//            leftViewImage.image = UIImage(named: "archive_icon")
+//            leftViewImage.alpha = 1
+//        }
+//        if translation.x >= 260 && translation.x <= 320 {
+//            leftView.backgroundColor = UIColor.init(hexString: "e21314")
+//            leftViewImage.image = UIImage(named: "delete_icon")
+//            leftViewImage.alpha = 1
+//                
+//        }
+//        
+//        if translation.x <= 0 && translation.x >= -60 {
+//            UIView.animateWithDuration(1.8, animations: {
+//            self.rightView.backgroundColor = UIColor.init(hexString: "e3e3e3")
+//            self.rightViewImage.image = UIImage(named: "later_icon")
+//            self.rightViewImage.image = UIImage(named: "later_icon"); self.rightViewImage.alpha = 1
+//                }
+//        )}
+//        else {
+//            self.rightViewImage.alpha = 0
+//        }
+//        if translation.x <= -60 && translation.x >= -260 {
+//            rightView.backgroundColor = UIColor.init(hexString: "fad233")
+//            rightViewImage.image = UIImage(named: "later_icon")
+//        }
+//        if translation.x <= -260 && translation.x >= -320 {
+//            rightView.backgroundColor = UIColor.init(hexString: "d8a675")
+//            rightViewImage.image = UIImage(named: "list_icon")
+//
+//        }
         
         
         if sender.state == UIGestureRecognizerState.Ended {
             print("Gesture ended at: \(translation)")
             
-            UIView.animateWithDuration(0.9, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 1, options:[] , animations: { () -> Void in self.messageView.center = self.messageOriginalCenter
-                }, completion: {(Bool) -> Void in
-            })
-            if velocity.x < -500 {
-                print("velocity")
+            // swipe right, affect leftView
+            if translation.x >= 60 {
+                // UNCOMMENT LATER
+//                UIView.animateWithDuration(0.5, animations: { () -> Void in
+//                    self.messageView.center = CGPoint(x: 740, y: self.messageView.center.y)
+//                    self.leftViewImage.alpha = 0
+//                })
+                
+                // temporary, DELETE
+                UIView.animateWithDuration(0.9, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 1, options:[] , animations: { () -> Void in self.messageView.center = self.messageOriginalCenter
+                    self.messageViewImage.center = self.originalMessageViewImageCenter
+                    }, completion: nil)
+            }
+            
+            // swipe left, affect rightView
+            // if reschedule range
+            if translation.x <= -60 && translation.x > -260{
                 UIView.animateWithDuration(0.5, animations: { () -> Void in
-                    self.rescheduleView.alpha = 1;
+                    self.messageView.center = CGPoint(x: 220, y: self.messageView.center.y)
+                    self.rightViewImage.alpha = 0
+                    }, completion: { (complete) -> Void in
+                        if (complete) {
+                            UIView.animateWithDuration(0.4, animations: { () -> Void in
+                                self.rescheduleView.alpha = 1
+                            })
+                        }
                 })
             }
+            
+            // if list range
+            if translation.x <= -260 {
+                UIView.animateWithDuration(0.5, animations: { () -> Void in
+                    self.messageView.center = CGPoint(x: 220, y: self.messageView.center.y)
+                    self.rightViewImage.alpha = 0
+                    }, completion: { (complete) -> Void in
+                        if (complete) {
+                            UIView.animateWithDuration(0.4, animations: { () -> Void in
+                                self.listView.alpha = 1
+                            })
+                        }
+                })
+            }
+            // if archive/delete range
+            
         }
-        
-
         
     }
 
@@ -133,6 +213,10 @@ class MailViewController: UIViewController, UIScrollViewDelegate {
     @IBAction func rescheduleViewButton(sender: UIButton) {
         self.rescheduleView.alpha = 0;
     }
+    @IBAction func listViewButton(sender: UIButton) {
+        self.listView.alpha = 0;
+    }
+    
 
     /*
     // MARK: - Navigation
