@@ -175,6 +175,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="pm3-Ac-Ihy"/>
                     <connections>
+                        <outlet property="feedViewImage" destination="um8-xr-hoU" id="pfA-t8-7av"/>
                         <outlet property="leftView" destination="leG-IR-1O8" id="cyy-8l-GjS"/>
                         <outlet property="leftViewImage" destination="eYt-9D-Hxe" id="mji-P2-cpA"/>
                         <outlet property="listView" destination="fgS-Tf-igU" id="yaR-jy-4p8"/>

@@ -39,6 +39,7 @@ class MailViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var rescheduleView: UIView!
     @IBOutlet weak var messageViewImage: UIImageView!
     @IBOutlet weak var listView: UIView!
+    @IBOutlet weak var feedViewImage: UIImageView!
 
     
     var messageOriginalCenter: CGPoint!
@@ -92,80 +93,31 @@ class MailViewController: UIViewController, UIScrollViewDelegate {
                 messageView.center = CGPoint(x: messageOriginalCenter.x + translation.x + 60, y: messageOriginalCenter.y)
                 messageViewImage.center = CGPoint(x: originalMessageViewImageCenter.x - 60, y:originalMessageViewImageCenter.y)
                 rightView.backgroundColor = UIColor.init(hexString: "fad233")
+                rightViewImage.image = UIImage(named: "reschedule_icon")
+            }
+            
+            if translation.x <= -260 && translation.x >= -320 {
+                rightView.backgroundColor = UIColor.init(hexString: "d8a675")
+                rightViewImage.image = UIImage(named: "list_icon")
             }
             
             // swipe right, affects leftView
-            if translation.x >= 61 {
+            if translation.x >= 61 && translation.x <= 259 {
                 messageView.center = CGPoint(x: messageOriginalCenter.x + translation.x - 60, y: messageOriginalCenter.y)
                 messageViewImage.center = CGPoint(x: originalMessageViewImageCenter.x + 60, y:originalMessageViewImageCenter.y)
                 leftView.backgroundColor = UIColor.init(hexString: "70d962")
+                leftViewImage.image = UIImage(named: "archive_icon")
+            }
+            
+            if translation.x >= 260 && translation.x <= 320 {
+                leftView.backgroundColor = UIColor.init(hexString: "e21314")
+                leftViewImage.image = UIImage(named: "delete_icon")
             }
         }
-//        if translation.x <= -61 {
-//            leftView.backgroundColor = UIColor.init(hexString: "fad233")
-//        }
-//        
-//        if translation.x >= 61 {
-//            rightView.backgroundColor = UIColor.init(hexString: "70d962")
-//        }
-//        if translation.x >= 0 && translation.x <= 60 {
-//            UIView.animateWithDuration(1.8, animations: {
-//            self.leftView.backgroundColor = UIColor.init(hexString: "e3e3e3")
-//            self.leftViewImage.image = UIImage(named: "archive_icon"); self.leftViewImage.alpha = 1
-//                }
-//        )}
-//        else {
-//            self.leftViewImage.alpha = 0
-//        }
-//        if translation.x >= 60 && translation.x <= 260 {
-//            leftView.backgroundColor = UIColor.init(hexString: "70d962")
-//            leftViewImage.image = UIImage(named: "archive_icon")
-//            leftViewImage.alpha = 1
-//        }
-//        if translation.x >= 260 && translation.x <= 320 {
-//            leftView.backgroundColor = UIColor.init(hexString: "e21314")
-//            leftViewImage.image = UIImage(named: "delete_icon")
-//            leftViewImage.alpha = 1
-//                
-//        }
-//        
-//        if translation.x <= 0 && translation.x >= -60 {
-//            UIView.animateWithDuration(1.8, animations: {
-//            self.rightView.backgroundColor = UIColor.init(hexString: "e3e3e3")
-//            self.rightViewImage.image = UIImage(named: "later_icon")
-//            self.rightViewImage.image = UIImage(named: "later_icon"); self.rightViewImage.alpha = 1
-//                }
-//        )}
-//        else {
-//            self.rightViewImage.alpha = 0
-//        }
-//        if translation.x <= -60 && translation.x >= -260 {
-//            rightView.backgroundColor = UIColor.init(hexString: "fad233")
-//            rightViewImage.image = UIImage(named: "later_icon")
-//        }
-//        if translation.x <= -260 && translation.x >= -320 {
-//            rightView.backgroundColor = UIColor.init(hexString: "d8a675")
-//            rightViewImage.image = UIImage(named: "list_icon")
-//
-//        }
         
         
         if sender.state == UIGestureRecognizerState.Ended {
             print("Gesture ended at: \(translation)")
-            
-            // swipe right, affect leftView
-            if translation.x >= 60 {
-                // UNCOMMENT LATER
-//                UIView.animateWithDuration(0.5, animations: { () -> Void in
-//                    self.messageView.center = CGPoint(x: 740, y: self.messageView.center.y)
-//                    self.leftViewImage.alpha = 0
-//                })
-                
-                // temporary, DELETE
-                UIView.animateWithDuration(0.9, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 1, options:[] , animations: { () -> Void in self.messageView.center = self.messageOriginalCenter
-                    self.messageViewImage.center = self.originalMessageViewImageCenter
-                    }, completion: nil)
-            }
             
             // swipe left, affect rightView
             // if reschedule range
@@ -195,14 +147,47 @@ class MailViewController: UIViewController, UIScrollViewDelegate {
                         }
                 })
             }
+            
+            // swipe right, affect leftView
             // if archive/delete range
+            if translation.x >= 60 && translation.x < 260 {
+                UIView.animateWithDuration(1.0, animations: { () -> Void in
+                    self.messageView.center = CGPoint(x: 740, y: self.messageView.center.y)
+                    self.leftViewImage.alpha = 0
+                    }, completion: { (complete) -> Void in
+                        if (complete) {
+                            self.hideMessage()
+                        }
+                })
+            }
+            if translation.x >= 260 {
+                UIView.animateWithDuration(1.0, animations: { () -> Void in
+                    self.messageView.center = CGPoint(x: 740, y: self.messageView.center.y)
+                    self.leftViewImage.alpha = 0;
+                    }, completion: { (complete) -> Void in
+                        if (complete) {
+                            self.hideMessage()
+                        }
+                })
+            }
             
         }
         
     }
 
-
-
+    func hideMessage() {
+        UIView.animateWithDuration(0.5) { () -> Void in
+            var messageFrame = self.messageView.frame
+            let changeInY = messageFrame.size.height
+            messageFrame.size.height = 0
+            
+            var feedFrame = self.feedViewImage.frame
+            feedFrame.origin.y = feedFrame.origin.y - changeInY
+            
+            self.messageView.frame = messageFrame
+            self.feedViewImage.frame = feedFrame
+        }
+    }
     
     
     override func didReceiveMemoryWarning() {
@@ -212,10 +197,13 @@ class MailViewController: UIViewController, UIScrollViewDelegate {
     
     @IBAction func rescheduleViewButton(sender: UIButton) {
         self.rescheduleView.alpha = 0;
+        hideMessage()
     }
     @IBAction func listViewButton(sender: UIButton) {
         self.listView.alpha = 0;
+        hideMessage()
     }
+    
     
 
     /*
