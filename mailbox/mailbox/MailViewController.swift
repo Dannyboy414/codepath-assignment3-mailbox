@@ -93,7 +93,7 @@ class MailViewController: UIViewController, UIScrollViewDelegate {
                 messageView.center = CGPoint(x: messageOriginalCenter.x + translation.x + 60, y: messageOriginalCenter.y)
                 messageViewImage.center = CGPoint(x: originalMessageViewImageCenter.x - 60, y:originalMessageViewImageCenter.y)
                 rightView.backgroundColor = UIColor.init(hexString: "fad233")
-                rightViewImage.image = UIImage(named: "reschedule_icon")
+                rightViewImage.image = UIImage(named: "later_icon")
             }
             
             if translation.x <= -260 && translation.x >= -320 {
@@ -199,6 +199,7 @@ class MailViewController: UIViewController, UIScrollViewDelegate {
         self.rescheduleView.alpha = 0;
         hideMessage()
     }
+    
     @IBAction func listViewButton(sender: UIButton) {
         self.listView.alpha = 0;
         hideMessage()
